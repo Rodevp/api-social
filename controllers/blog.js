@@ -1,4 +1,5 @@
 import Blog from "../models/blog.js"
+import User from "../models/user.js"
 
 const allBlog = async (req, res, next) => {
 
@@ -28,9 +29,16 @@ const createBlog = async (req, res, next) => {
         userId
     })
 
+    const currentUser = await User.findById(userId)
+    console.log('user id', currentUser)
 
     try {
-        blog.save()  
+
+        await blog.save()
+
+        currentUser.blogs.push(blog)
+        await currentUser.save()
+
     } catch (error) {
         console.log('error for save blog')
     }
@@ -88,7 +96,11 @@ const deleteBlog = async (req, res, next) => {
     let blog = undefined
 
     try {
-        blog = await Blog.findByIdAndRemove(id)
+        
+        blog = await Blog.findByIdAndRemove(id).populate("user")
+        await blog.user.blogs.pull(blog)
+        await blog.user.save()
+
     } catch (error) {
         console.log('Blog update error')
     }

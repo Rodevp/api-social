@@ -19,6 +19,26 @@ const allUsers = async (req, res, next) => {
 
 }
 
+const getUser = async (req, res, next) => {
+
+    const id = req.params.id
+
+    let user = undefined
+
+    try {
+        user = await User.findById(id).populate("blogs")
+    } catch (err) {
+        console.log("error found user")
+    }
+
+    return res.status(200).json({
+        status: "succes",
+        message: "user",
+        data: user
+    })
+
+}
+
 const singup = async (req, res, next) => {
     const { name, email, password } = req.body
 
@@ -84,5 +104,6 @@ const login = async (req, res, next) => {
 export {
     allUsers,
     singup,
-    login
+    login,
+    getUser
 }
