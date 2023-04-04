@@ -34,7 +34,7 @@ const singup = async (req, res, next) => {
     if ( userExist ) return res.status(401).json({ status: "failed", message: "User Al ready exist" })
 
     const hashedPassword = await bcrypjs.hash(password, 8)
-    
+
     const user = new User({
         name,
         email, 
@@ -52,8 +52,36 @@ const singup = async (req, res, next) => {
 }
 
 
+const login = async (req, res, next) => {
+
+    const {email, password} = req.body
+
+    let user = undefined
+
+    try {
+        user = await User.findOne({ email })
+    } catch (error) {
+        console.log('error in found exist user')
+    }
+
+    if (!user) 
+        return res.status(404).json({ status: "failed", message: "user not found" })
+
+    
+    const comparePassword = await bcrypjs.compare(password, user.password)
+
+    if(!comparePassword)
+        return res.status(400).json({ status: "failed", message: "email or password is incorret" })
+
+    
+    return res.status(200).json({ status: "succes", message: "user", data: user })
+
+}
+
+
 
 export {
     allUsers,
-    singup
+    singup,
+    login
 }
