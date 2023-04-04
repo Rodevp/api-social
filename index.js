@@ -3,6 +3,7 @@ import express from "express"
 import morgan from "morgan"
 import { connectDb } from "./db.js"
 import routerUsers from "./routes/user.js"
+import routerBlogs from "./routes/blog.js"
 
 dotenv.config()
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/users', routerUsers)
+app.use('/api/v1/blogs', routerBlogs)
 
 
 connectDb()
