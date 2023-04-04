@@ -1,4 +1,5 @@
 import User from "../models/user.js"
+import bcrypjs from "bcryptjs"
 
 const allUsers = async (req, res, next) => {
 
@@ -32,10 +33,12 @@ const singup = async (req, res, next) => {
 
     if ( userExist ) return res.status(401).json({ status: "failed", message: "User Al ready exist" })
 
-    let user = new User({
+    const hashedPassword = await bcrypjs.hash(password, 8)
+    
+    const user = new User({
         name,
         email, 
-        password
+        password: hashedPassword
     }) 
 
     try {
