@@ -1,0 +1,31 @@
+{
+  "name": "api-social",
+  "version": "0.0.1",
+  "description": "social api",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rodevp/api-social.git"
+  },
+  "keywords": [
+    "social",
+    "api"
+  ],
+  "author": "Rodevp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rodevp/api-social/issues"
+  },
+  "homepage": "https://github.com/Rodevp/api-social#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "morgan": "1.10.0",
+    "nodemon": "2.0.22"
+  }
+}
