@@ -1,4 +1,4 @@
-import Blog from "../models/blog"
+import Blog from "../models/blog.js"
 
 const allBlog = async (req, res, next) => {
 
@@ -40,9 +40,70 @@ const createBlog = async (req, res, next) => {
 
 }
 
+const updateBlog = async (req, res, next) => {
+    
+    const { title, description } = req.body
+    const id = req.params.id
 
+    let blog = undefined
+
+    try {
+        blog = await Blog.findOneAndUpdate(id, {
+            title, 
+            description
+        })
+    } catch (error) {
+        console.log('Blog update error')
+    }
+
+    if (!blog)
+        return res.status(500).json({ status: "failed", message: "Blog no update"})
+
+    return res.status(200).json({ status: "success", message: "Blog update", data: blog })
+
+}
+
+
+const getBlog = async (req, res, next) => {
+    
+    const id = req.params.id
+    let blog = undefined
+
+    try {
+        blog = await Blog.findById(id)
+    } catch (error) {
+        console.log('Blog update error')
+    }
+
+    if (!blog)
+        return res.status(404).json({ status: "failed", message: "Blog not found"})
+
+    return res.status(200).json({ status: "success", message: "Blog", data: blog })
+
+}
+
+const deleteBlog = async (req, res, next) => {
+    
+    const id = req.params.id
+    let blog = undefined
+
+    try {
+        blog = await Blog.findByIdAndRemove(id)
+    } catch (error) {
+        console.log('Blog update error')
+    }
+
+    if (!blog)
+        return res.status(404).json({ status: "failed", message: "Blog not found"})
+
+    return res.status(200).json({ status: "success", message: "Blog delete" })
+
+}
 
 export {
     allBlog,
-    createBlog
+    createBlog,
+    updateBlog,
+    getBlog,
+    deleteBlog
 }
